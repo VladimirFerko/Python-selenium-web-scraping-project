@@ -1,5 +1,9 @@
 from selenium import webdriver
+import main
+import selenium
 import time
+import selenium
+import os
 
 
 # func for gettin users input
@@ -24,8 +28,10 @@ def get_user_input():
 
 # function for opening google chrome driver 
 
-def open_driver(DRIVER_PATH):
+def open_driver(DRIVER_PATH, link = 'https://www.google.com/'):
     driver = webdriver.Chrome(DRIVER_PATH)
-    driver.get("https://www.google.com/")
-    time.sleep(4)
+    driver.get(link)
     return driver
+
+# feature for scraping text from a blog
+
