@@ -33,6 +33,8 @@ if __name__ == '__main__':
         for index, item in enumerate(LINKS):
             print(f'{index + 1} - {item}')
 
+        # determining which webside does user want to use
+
         while True:
             try:
                 user_opt = int(input("which website do you want to choose ? "))
@@ -42,9 +44,20 @@ if __name__ == '__main__':
             except ValueError:
                 print('Give me an int...')
 
+        # determining how many articles does user want to scrape
+
+        while True:
+            try:
+                article_counter = int(input('How many articles do you want to scrape ? '))
+                if article_counter < 0:
+                    raise ValueError
+                break
+            except ValueError:
+                print('Give me a valid value')
+
         driver = functions.open_driver(DRIVER_PATH, LINKS[user_opt - 1])    
 
-        blogs.scrape_blog(driver)
+        blogs.scrape_blog(driver, article_counter)
 
 
     # closing the driver
