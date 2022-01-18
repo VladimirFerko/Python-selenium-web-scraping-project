@@ -12,16 +12,20 @@ LINKS = ('https://dennikn.sk/blog/','https://blog.sme.sk/','https://www.wikipedi
 
 if __name__ == '__main__':
 
-    user_opt = functions.get_user_input()
+    # getting input from the user
 
-    # clearing the terminal
-    print('\nLoading', end = '')
+    print('hi, there are your options to choose from')
+    print('1 - scrape text from a blog\n2 - search something in google\n3 - compare prices on heureka')
+    user_opt = functions.get_user_input("what u wanna do ? ", 3)
+
+    # loading print with some delay
+    print('Loading', end = '')
 
     for index in (0,1,2):
         print(".", end = '')
         sys.stdout.flush()
-        time.sleep(1)
-    os.system('cls||clear')
+        time.sleep(0.5)
+    
 
     # option 1, also choosing a link
 
@@ -35,14 +39,8 @@ if __name__ == '__main__':
 
         # determining which webside does user want to use
 
-        while True:
-            try:
-                user_opt = int(input("which website do you want to choose ? "))
-                if user_opt <= 0 or user_opt > 3:
-                    continue
-                break
-            except ValueError:
-                print('Give me an int...')
+        user_opt = functions.get_user_input("which website do you want to choose ? ", 3)
+        
 
         # determining how many articles does user want to scrape
 

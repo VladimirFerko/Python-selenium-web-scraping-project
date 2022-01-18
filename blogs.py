@@ -1,4 +1,5 @@
 from calendar import WEDNESDAY
+from pydoc_data.topics import topics
 from selenium import webdriver
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -6,6 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 import main
+import functions
 import selenium
 import time
 import os
@@ -16,9 +18,10 @@ def scrape_blog(driver, article_counter):
 
     # case user, chose dennikn blog
     if driver.current_url == main.LINKS[0]:
-        cookies = driver.find_element_by_class_name('fc-button-label')
-        cookies.click()
-        print('Cookies clicked')
+        print(f'The blog you have chosen : dennikn.sk')
+
+        # allow cookies
+        functions.allow_cookies(driver)
 
 
         os.chdir(os.path.join('/','home', 'vladimir' ,'projects', 'webScrp', 'articles', 'dennikn'))
@@ -27,13 +30,9 @@ def scrape_blog(driver, article_counter):
         # creating text files... name of the file is authors name and date when he posted that
         for item in range(article_counter):
 
-            # waiting for page to load
-            try:
-                myElem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'article')))
-            except TimeoutException:
-                print ("Loading took too much time!")
-                sys.exit()
-
+            # waiting func for articles to load
+            functions.wait_for_tag_name('article', driver)
+            
             file_names = driver.find_elements_by_tag_name('article')
             i = 0
             text_file_name = ''
@@ -53,11 +52,8 @@ def scrape_blog(driver, article_counter):
                 i += 1
     
             # waiting for page to load
-            try:
-                myElem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, 'p')))
-            except TimeoutException:
-                print ("Loading took too much time!")
-                sys.exit()
+            functions.wait_for_tag_name('p', driver)
+            
             file_names[item].click()
 
             text = driver.find_elements_by_tag_name('p')
@@ -77,3 +73,21 @@ def scrape_blog(driver, article_counter):
                             article_file.write('\n')
                             row_len = 0
             driver.back()
+
+
+    # case user has chosen blog sme
+    elif driver.current_url == main.LINKS[1]:
+        # allow cookies
+        functions.allow_cookies(driver)
+
+        # determining what topic does the user want
+        toppics = driver.find_elements_by_class_name('nav-item')
+
+        # printing the options and getting the toppic
+        print('Select the topic of your choice : ')
+        for index,item in enumerate(toppics):
+            print(f'{index + 1} - {item.text}')
+
+        toppic_choice = functions.get_user_input('Choose a topic of a blog you want to scrape : ', 11)
+
+        print(f'you have chosen {toppics[toppic_choice - 1].text}')
