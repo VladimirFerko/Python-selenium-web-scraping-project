@@ -44,14 +44,7 @@ if __name__ == '__main__':
 
         # determining how many articles does user want to scrape
 
-        while True:
-            try:
-                article_counter = int(input('How many articles do you want to scrape ? '))
-                if article_counter < 0:
-                    raise ValueError
-                break
-            except ValueError:
-                print('Give me a valid value')
+        article_counter = functions.get_count('How many articles do you want to scrape ? ')
 
         driver = functions.open_driver(DRIVER_PATH, LINKS[user_opt - 1])    
 

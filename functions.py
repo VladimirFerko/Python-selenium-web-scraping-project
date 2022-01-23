@@ -1,3 +1,4 @@
+from itertools import count
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -12,7 +13,7 @@ import os
 import sys
 
 
-# func for gettin users input
+# func for gettin users input (what choice)
 
 def get_user_input(prompt, high_limit,low_limit = 0):
     
@@ -28,6 +29,20 @@ def get_user_input(prompt, high_limit,low_limit = 0):
     os.system('cls||clear')
 
     return option
+
+# func for getting users input (how many)
+
+def get_count(prompt):
+    while True:
+            try:
+                count = int(input(prompt))
+                if count < 0:
+                    raise ValueError
+                break
+            except ValueError:
+                print('Give me a valid value')
+    
+    return count
 
 
 # function for opening google chrome driver 
@@ -46,6 +61,14 @@ def wait_for_tag_name(tag_name, driver):
             except TimeoutException:
                 print ("Loading took too much time!")
                 sys.exit()
+
+# waiting function for class name 
+def wait_for_class_name(class_name, driver):
+    try:
+        myElem = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, class_name)))
+    except TimeoutException:
+        print ("Loading took too much time!")
+        sys.exit()
 
 # allow cookies
 
