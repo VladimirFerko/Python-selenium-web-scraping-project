@@ -17,7 +17,8 @@ import sys
 def scrape_blog(driver, article_counter):
 
     # array for article elements
-    article_arr = [None] * article_counter
+ #   article_arr = [None] * article_counter
+    article_arr = list()
 
     # case user, chose dennikn blog
     if driver.current_url == main.LINKS[0]:
@@ -36,7 +37,7 @@ def scrape_blog(driver, article_counter):
             functions.wait_for_tag_name('article', driver)
 
             for i in range(article_counter):
-                article_arr[i] = driver.find_element_by_tag_name('article')
+                article_arr.append(driver.find_element_by_tag_name('article'))
 
             print(article_arr)
             i = 0
@@ -95,7 +96,7 @@ def scrape_blog(driver, article_counter):
 
         # printing the options and getting the toppic
         print('Select the topic of your choice : ')
-        for index,item in enumerate(toppics):
+        for index, item in enumerate(toppics):
             print(f'{index + 1} - {item.text}')
 
         toppic_choice = functions.get_user_input('Choose a topic of a blog you want to scrape : ', 11)
@@ -108,10 +109,9 @@ def scrape_blog(driver, article_counter):
             functions.wait_for_class_name('nav-link', driver)
             toppics[toppic_choice - 1].click()
 
-            functions.wait_for_tag_name('h3', driver)
+            functions.wait_for_class_name('title', driver)
 
-            for i in range(article_counter):
-                article_arr[i] = driver.find_element_by_tag_name('h3')
+            article_arr = driver.find_elements_by_class_name('title')
 
             # clicking on an elements of the articles and scraping them
             article_arr[item].click()
@@ -129,7 +129,6 @@ def scrape_blog(driver, article_counter):
 
                 for content in text:
                     writable_text = content.text.split()
-                    print(writable_text)
                     row_len = 0
                     for word in writable_text:
                         article.write(f'{word} ')
@@ -138,6 +137,8 @@ def scrape_blog(driver, article_counter):
                         if row_len == 10:
                             article.write('\n')
                             row_len = 0
+            
+            article_arr.clear()
             
             driver.back()
 
