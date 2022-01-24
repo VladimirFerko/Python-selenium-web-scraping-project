@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.keys import Keys
 import main
 import functions
 import selenium
@@ -14,7 +15,7 @@ import os
 import sys
 
 
-def scrape_blog(driver, article_counter):
+def scrape_blog(driver, arg):
 
     # array for article elements
  #   article_arr = [None] * article_counter
@@ -31,12 +32,12 @@ def scrape_blog(driver, article_counter):
         os.chdir(os.path.join('/','home', 'vladimir' ,'projects', 'webScrp', 'articles', 'dennikn'))
 
         # creating text files... name of the file is authors name and date when he posted that
-        for item in range(article_counter):
+        for item in range(arg):
 
             # waiting func for articles to load
             functions.wait_for_tag_name('article', driver)
 
-            for i in range(article_counter):
+            for i in range(arg):
                 article_arr.append(driver.find_element_by_tag_name('article'))
 
             print(article_arr)
@@ -103,7 +104,7 @@ def scrape_blog(driver, article_counter):
 
         print(f'you have chosen {toppics[toppic_choice - 1].text}')
 
-        for item in range(article_counter):
+        for item in range(arg):
             toppics = driver.find_elements_by_class_name('nav-item')
             # waiting for page to load and clicking on certain element
             functions.wait_for_class_name('nav-link', driver)
@@ -141,6 +142,16 @@ def scrape_blog(driver, article_counter):
             article_arr.clear()
             
             driver.back()
+    
+
+    elif driver.current_url == main.LINKS[2]:
+        text_box = driver.find_element(By.XPATH, '//*[@id="searchInput"]')
+        text_box.send_keys(arg)
+        text_box.send_keys(Keys.ENTER)
+
+        time.sleep(10)
+
+
 
 
 

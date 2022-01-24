@@ -42,13 +42,19 @@ if __name__ == '__main__':
         user_opt = functions.get_user_input("which website do you want to choose ? ", 3)
         
 
-        # determining how many articles does user want to scrape
+        # determining how many articles does user want to scrape or what demand does user want to scrape
 
-        article_counter = functions.get_count('How many articles do you want to scrape ? ')
-
+        if user_opt != 3:
+            article_counter = functions.get_count('How many articles do you want to scrape ? ')
+        else:
+            demand = functions.get_demand()
         driver = functions.open_driver(DRIVER_PATH, LINKS[user_opt - 1])    
 
-        blogs.scrape_blog(driver, article_counter)
+
+        if driver.current_url != LINKS[2]:
+            blogs.scrape_blog(driver, article_counter)
+        else:
+            blogs.scrape_blog(driver, demand)
 
 
     # closing the driver

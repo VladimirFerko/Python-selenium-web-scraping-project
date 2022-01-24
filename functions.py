@@ -83,3 +83,8 @@ def allow_cookies(driver):
         time.sleep(0.5)
 
     os.system('cls||clear')
+
+# function for getting demand what does user want to get
+
+def get_demand():
+    return input('What do you want to search for ? ')
