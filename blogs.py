@@ -17,8 +17,6 @@ import sys
 
 def scrape_blog(driver, arg):
 
-    # array for article elements
- #   article_arr = [None] * article_counter
     article_arr = list()
 
     # case user, chose dennikn blog
@@ -37,10 +35,8 @@ def scrape_blog(driver, arg):
             # waiting func for articles to load
             functions.wait_for_tag_name('article', driver)
 
-            for i in range(arg):
-                article_arr.append(driver.find_element_by_tag_name('article'))
+            article_arr = driver.find_elements_by_tag_name('article')
 
-            print(article_arr)
             i = 0
             text_file_name = ''
             header_text = ''
@@ -89,9 +85,7 @@ def scrape_blog(driver, arg):
         # allow cookies
         functions.allow_cookies(driver)
 
-        # changing directory for files
-        os.chdir(os.path.join('/','home', 'vladimir' ,'projects', 'webScrp', 'articles', 'sme'))
-
+       
         # determining what topic does the user want
         toppics = driver.find_elements_by_class_name('nav-item')
 
@@ -101,6 +95,10 @@ def scrape_blog(driver, arg):
             print(f'{index + 1} - {item.text}')
 
         toppic_choice = functions.get_user_input('Choose a topic of a blog you want to scrape : ', 11)
+
+        # changing directory for files
+        os.chdir(os.path.join('/','home', 'vladimir' ,'projects', 'webScrp', 'articles', 'sme', toppics[toppic_choice - 1].text))
+
 
         print(f'you have chosen {toppics[toppic_choice - 1].text}')
 
@@ -149,7 +147,16 @@ def scrape_blog(driver, arg):
         text_box.send_keys(arg)
         text_box.send_keys(Keys.ENTER)
 
-        time.sleep(10)
+        text = driver.find_elements_by_id('mw-content-text')
+
+        #changing directory
+        os.chdir(os.path.join('/','home', 'vladimir' ,'projects', 'webScrp', 'articles', 'wikipedia'))
+
+        with open(arg, 'w+') as text_file:
+            for index, article in enumerate(text):
+                text_file.write(article.text)
+                if index == 9 or index == 19 or index == 29:
+                    article.write('\n')
 
 
 
