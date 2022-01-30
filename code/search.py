@@ -3,8 +3,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from google_images_download import google_images_download
 import functions
 import databaseFunctions
+import os 
 
 
 def search_it(driver, demand, wantDownl, count = -1):
@@ -21,6 +23,25 @@ def search_it(driver, demand, wantDownl, count = -1):
 
     functions.wait_for_tag_name('h3', driver)
 
+
+    # user wants to download pictures case
+
+    if wantDownl:
+        # changing directory
+        os.chdir(os.path.join('/','home', 'vladimir' ,'projects', 'webScrp'))
+
+        response = google_images_download.googleimagesdownload()
+        args = {
+            "keywords":     f'{demand}',
+            "limit":        f'{count}',
+            "print_urls":   False
+        }
+
+        paths = response.download(args)
+
+        print(paths)
+
+        
 
     
     

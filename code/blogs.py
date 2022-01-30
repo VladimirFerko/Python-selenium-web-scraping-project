@@ -1,5 +1,3 @@
-from calendar import WEDNESDAY
-from pydoc_data.topics import topics
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
