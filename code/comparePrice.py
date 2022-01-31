@@ -27,7 +27,6 @@ def get_prices(driver):
 
     tmp = list()
     handled_data = list()
-    print(scraped_arr)
     for index in range(len(scraped_arr)):
         if scraped_arr[index] == "€":
             price = f'{scraped_arr[index - 1]} {scraped_arr[index]}'
