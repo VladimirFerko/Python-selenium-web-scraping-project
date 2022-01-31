@@ -1,7 +1,7 @@
-from tokenize import Name
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import functions
+import comparePrice
 import blogs
 import search
 import psycopg2
@@ -83,6 +83,17 @@ if __name__ == '__main__':
             search.search_it(driver, demand, wantDownl, count)
         except NameError:
             search.search_it(driver, demand, wantDownl)
+
+    elif user_opt == 3:
+        # get product
+        product = functions.get_demand()
+
+        driver = functions.open_driver(DRIVER_PATH, 'https://www.heureka.sk/')
+
+        comparePrice.insert_product(driver, product)
+        handled_data, product_name = comparePrice.get_prices(driver)
+
+        functions.handle_data(handled_data, product, product_name)
 
         
 

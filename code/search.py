@@ -15,6 +15,7 @@ def search_it(driver, demand, wantDownl, count = -1):
 
     databaseFunctions.insert_search(conn, demand, wantDownl, count)
 
+    conn.close()
 
     # entering data
     search_bar = driver.find_element(By.XPATH, '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input')
@@ -40,8 +41,3 @@ def search_it(driver, demand, wantDownl, count = -1):
         paths = response.download(args)
 
         print(paths)
-
-        
-
-    
-    

@@ -1,12 +1,10 @@
-from itertools import count
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+import databaseFunctions
 import main
-import main
-import selenium
 import time
 import selenium
 import os
@@ -100,3 +98,31 @@ def get_bool(prompt):
             return False
         else:
             print('wrong input')
+
+# function for handling scraped data and writing them into a database
+
+def handle_data(handled_data, product, product_name):
+  
+    # turning array prices into a float datatype
+    n = len(handled_data)
+    for i in range(n):
+        for j in (0, 1):
+            if handled_data[i][j] != 'Free':
+                handled_data[i][j] = float(handled_data[i][j][: -1].replace(',', '.'))
+            else:
+                handled_data[i][j] = 0
+
+    # bubble sorting array with prices ASC
+    n = len(handled_data)
+    for i in range(n - 1):
+        for j in range(0, n - i - 1):
+            if handled_data[j][0] + handled_data[j][1] > handled_data[j + 1][0] + handled_data[j + 1][1]:
+                handled_data[j], handled_data[j + 1] = handled_data[j + 1], handled_data[j]
+
+    # saving data into a database
+
+    conn = databaseFunctions.make_conn()
+
+    databaseFunctions.insert_product(conn, handled_data, product, product_name)
+
+
